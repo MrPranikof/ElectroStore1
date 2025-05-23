@@ -7,23 +7,28 @@
         mc:Ignorable="d"
         Title="Main" Height="600" Width="1200"
         ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
         >
     <Grid Background="{StaticResource BackgroundColor}">
-        <Grid x:Name="Header" >
-            <TextBlock Text="ElectroStore" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="32" Margin="50,5,0,0" Foreground="{StaticResource TextColor}"/>
+        <Grid x:Name="Header" Height="50" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" Margin="10,5">
+                <TextBlock Text="ElectroStore" FontSize="32" Foreground="{StaticResource TextColor}"/>
+                <TextBox x:Name="SearchTextBox" Width="600" Margin="10,5,0,5">Поиск</TextBox>
+                <Button>Поиск</Button>
+                <Button>Корзина</Button>
+                <Button>Избранное</Button>
+                <Button>Доставки</Button>
+                <Button>Профиль</Button>
+            </StackPanel>
         </Grid>
         
         <Grid Margin="5,54,5,0" Height="50" VerticalAlignment="Top" x:Name="Navigation">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="CatalogButton" Grid.Column="0" MouseEnter="CatalogButton_Enter" MouseLeave="UIElement_Leave" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource TextColor}">Каталог</Button>
-            <Button x:Name="FavouritesButton" Grid.Column="1" MouseEnter="FavouritesButton_Enter" MouseLeave="UIElement_Leave" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource TextColor}">Избранное</Button>
-            <Button x:Name="BasketButton" Grid.Column="2" MouseEnter="BasketButton_Enter" MouseLeave="UIElement_Leave" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource TextColor}">Корзина</Button>
+            <Button x:Name="CatalogButton" Grid.Column="0" MouseEnter="CatalogButton_Enter" MouseLeave="UIElement_Leave" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource TextColor}" Click="CatalogButton_Click">Каталог</Button>
             <Button x:Name="AdminPanelButton" Grid.Column="3" MouseEnter="AdminPanelButton_Enter" MouseLeave="UIElement_Leave" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource TextColor}">Админ панель</Button>
         </Grid>
         <Canvas x:Name="canvasCatalog" Background="White" Visibility="Collapsed" Margin="5,101,0,0" MouseEnter="Panel_MouseEnter" MouseLeave="Panel_MouseLeave" Height="50" VerticalAlignment="Top">
@@ -38,6 +43,6 @@
         <Canvas x:Name="canvasAdminPanel" Background="White" Visibility="Collapsed" Margin="5,105,5,0" MouseEnter="Panel_MouseEnter" MouseLeave="Panel_MouseLeave" Height="50" VerticalAlignment="Top">
         </Canvas>
 
-        <DataGrid Width="200" Height="200" x:Name="DGMain"></DataGrid>
+        <Frame x:Name="MainFrame" Margin="0,150,0,0"/>
     </Grid>
 </Window>

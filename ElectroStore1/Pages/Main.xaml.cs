@@ -15,6 +15,7 @@ using System.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using System.Data;
 using System.Data.Common;
+using ElectroStore1.Windows.Pages;
 
 namespace ElectroStore1.Pages
 {
@@ -25,7 +26,6 @@ namespace ElectroStore1.Pages
         public Main(int userId, int roleId)
         {
             InitializeComponent();
-            qwerty();
             _userId = userId;
             _roleId = roleId;
             SetupUI();
@@ -35,7 +35,6 @@ namespace ElectroStore1.Pages
             if (_roleId != 1)
             {
                 AdminPanelButton.Visibility = Visibility.Collapsed;
-                Grid.SetColumnSpan(BasketButton, 2);
             }
         }
         private void CatalogButton_Enter(object sender, RoutedEventArgs e)
@@ -87,19 +86,9 @@ namespace ElectroStore1.Pages
             canvasBasket.Visibility = Visibility.Collapsed;
             canvasAdminPanel.Visibility = Visibility.Collapsed;
         }
-
-        private void qwerty()
+        private void CatalogButton_Click(object sender, RoutedEventArgs e)
         {
-            using (SqlConnection connection = DBConnection.GetConnection())
-            {
-                string query = "SELECT * FROM Roles";
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(query, connection);
-                DataTable dataTable = new DataTable();  
-                dataAdapter.Fill(dataTable);
-
-                DGMain.ItemsSource = dataTable.DefaultView;
-                connection.Open();
-            }
+            MainFrame.Navigate(new Catalog());
         }
     }
 }
