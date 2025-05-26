@@ -17,6 +17,8 @@ using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Windows.Media.Animation;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Text.RegularExpressions;
 
 namespace ElectroStore1.Pages
 {
@@ -28,26 +30,8 @@ namespace ElectroStore1.Pages
         public Registration()
         {
             InitializeComponent();
-            LoadData();
         }
-        public void LoadData()
-        {
-            try
-            {
-                using (SqlConnection connection = DBConnection.GetConnection())
-                {
-                    connection.Open();
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT * FROM Users", connection);
-                    DataTable dataTable = new DataTable();
-                    dataAdapter.Fill(dataTable);
-                    DG_Client.ItemsSource = dataTable.DefaultView;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+
         private bool x = true;
         private void PasswordButtonImage(object sender, RoutedEventArgs e)
         {
@@ -88,30 +72,72 @@ namespace ElectroStore1.Pages
 
         private void ButtonReg(object sender, RoutedEventArgs e)
         {
-            string userLogin = LoginTextBox.Text;
-            string userEmail = EmailTextBox.Text;
+            string userLogin = LoginTextBox.Text.Trim();
+            string userEmail = EmailTextBox.Text.Trim();
             string userPassword = null;
+
             if (hidePassword.Visibility == Visibility.Visible)
-                userPassword = hidePassword.Password;
+                userPassword = hidePassword.Password.Trim();
             if (showPassword.Visibility == Visibility.Visible)
-                userPassword = showPassword.Text;
+                userPassword = showPassword.Text.Trim();
 
-            string HashedPassword = Hash.HashPassword(userPassword);
-
-            using (SqlConnection connection = DBConnection.GetConnection())
+            if (string.IsNullOrWhiteSpace(userLogin) || string.IsNullOrWhiteSpace(userEmail) || string.IsNullOrWhiteSpace(userPassword))
             {
-                string query = @"INSERT INTO Users (Username, Email, PasswordHash, RoleId)" + "VALUES (@userLogin, @userEmail, @HashedPassword, 3)";
-                SqlCommand command = new SqlCommand(query, connection);
+                MessageBox.Show("Пожалуйста, заполните все поля.");
+                return;
+            }
 
-                command.Parameters.AddWithValue("@userLogin", userLogin);
-                command.Parameters.AddWithValue("@userEmail", userEmail);
-                command.Parameters.AddWithValue("@HashedPassword", HashedPassword);
+            if (!Regex.IsMatch(userEmail, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                MessageBox.Show("Некорректный формат email.");
+                return;
+            }
 
+            using (SqlConnection conn = DBConnection.GetConnection())
+            {
                 try
                 {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    MessageBox.Show("Вы успешно зарегестрировались");
+                    conn.Open();
+
+                    string checkUsers = @"SELECT COUNT(*) FROM Users WHERE Username = @userLogin OR Email = @userEmail";
+                    SqlCommand checkCommand = new SqlCommand(checkUsers, conn);
+
+                    checkCommand.Parameters.AddWithValue("@userLogin", userLogin);
+                    checkCommand.Parameters.AddWithValue("@userEmail", userEmail);
+
+                    int existingCount = (int)checkCommand.ExecuteScalar();
+
+                    if (existingCount > 0)
+                    {
+                        MessageBox.Show("Пользователь с таким логином или почтой уже существует.");
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при проверке пользователя: {ex.Message}");
+                    return;
+                }
+            }
+
+            string hashedPassword = Hash.HashPassword(userPassword);
+
+            using (SqlConnection conn = DBConnection.GetConnection())
+            {
+                try
+                {
+                    conn.Open();
+
+                    string insertQuery = @"INSERT INTO Users (Username, Email, PasswordHash, RoleId) 
+                                   VALUES (@userLogin, @userEmail, @hashedPassword, 3)";
+
+                    SqlCommand insertCommand = new SqlCommand(insertQuery, conn);
+                    insertCommand.Parameters.AddWithValue("@userLogin", userLogin);
+                    insertCommand.Parameters.AddWithValue("@userEmail", userEmail);
+                    insertCommand.Parameters.AddWithValue("@hashedPassword", hashedPassword);
+
+                    insertCommand.ExecuteNonQuery();
+                    MessageBox.Show("Вы успешно зарегистрировались!");
 
                     MainWindow nextWindow = new MainWindow();
                     nextWindow.Show();
@@ -119,9 +145,9 @@ namespace ElectroStore1.Pages
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка: {ex}");
+                    MessageBox.Show($"Ошибка при регистрации: {ex.Message}");
                 }
-            }    
+            }
         }
     }
 }

@@ -9,40 +9,58 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         >
-    <Grid Background="{StaticResource BackgroundColor}">
-        <Grid x:Name="Header" Height="50" VerticalAlignment="Top">
-            <StackPanel Orientation="Horizontal" Margin="10,5">
-                <TextBlock Text="ElectroStore" FontSize="32" Foreground="{StaticResource TextColor}"/>
-                <TextBox x:Name="SearchTextBox" Width="600" Margin="10,5,0,5">Поиск</TextBox>
-                <Button>Поиск</Button>
-                <Button>Корзина</Button>
-                <Button>Избранное</Button>
-                <Button>Доставки</Button>
-                <Button>Профиль</Button>
-            </StackPanel>
-        </Grid>
-        
-        <Grid Margin="5,54,5,0" Height="50" VerticalAlignment="Top" x:Name="Navigation">
+    <Grid>
+        <Grid VerticalAlignment="Top" Background="{StaticResource BackgroundColor}" Height="60">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="600"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="CatalogButton" Grid.Column="0" MouseEnter="CatalogButton_Enter" MouseLeave="UIElement_Leave" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource TextColor}" Click="CatalogButton_Click">Каталог</Button>
-            <Button x:Name="AdminPanelButton" Grid.Column="3" MouseEnter="AdminPanelButton_Enter" MouseLeave="UIElement_Leave" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource TextColor}">Админ панель</Button>
-        </Grid>
-        <Canvas x:Name="canvasCatalog" Background="White" Visibility="Collapsed" Margin="5,101,0,0" MouseEnter="Panel_MouseEnter" MouseLeave="Panel_MouseLeave" Height="50" VerticalAlignment="Top">
-            <Label>
-                <Hyperlink>Смартфоны и гаджеты</Hyperlink>
-            </Label>
-        </Canvas>
-        <Canvas x:Name="canvasFavourites" Background="White" Visibility="Collapsed" Margin="5,105,5,0" MouseEnter="Panel_MouseEnter" MouseLeave="Panel_MouseLeave" Height="50" VerticalAlignment="Top">
-        </Canvas>
-        <Canvas x:Name="canvasBasket" Background="White" Visibility="Collapsed" Margin="5,105,5,0" MouseEnter="Panel_MouseEnter" MouseLeave="Panel_MouseLeave" Height="50" VerticalAlignment="Top">
-        </Canvas>
-        <Canvas x:Name="canvasAdminPanel" Background="White" Visibility="Collapsed" Margin="5,105,5,0" MouseEnter="Panel_MouseEnter" MouseLeave="Panel_MouseLeave" Height="50" VerticalAlignment="Top">
-        </Canvas>
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="20,0" FontSize="28" Foreground="{StaticResource TextColor}" Cursor="Hand" MouseLeftButtonUp="GoToMain_Click">ElectroStore</TextBlock>
 
-        <Frame x:Name="MainFrame" Margin="0,150,0,0"/>
+            <TextBox Grid.Column="2" x:Name="SearchTextBox" VerticalAlignment="Center" Height="30" Margin="10,0" GotFocus="SearchTextBox_GotFocus" LostFocus="SearchTextBox_LostFocus" FontSize="20">Поиск</TextBox>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="3">
+                <Button Margin="5,0,70,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Search_Button">🔍</Button>
+                <Button Margin="5,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Basket_Button">
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center">🛒</TextBlock>
+                        <TextBlock FontSize="12" HorizontalAlignment="Center">Корзина</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="5,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" Foreground="Red" FontSize="24" Click="Favourites_Button">
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center">♥️</TextBlock>
+                        <TextBlock FontSize="12" Foreground="Black" HorizontalAlignment="Center">Избранное</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="5,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Delivery_Button">
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center">📦</TextBlock>
+                        <TextBlock FontSize="12" HorizontalAlignment="Center">Доставки</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="5,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Profile_Button">
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center">🙎‍♂️</TextBlock>
+                        <TextBlock FontSize="12">Профиль</TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Height="50" VerticalAlignment="Top" Margin="0,60,0,0" x:Name="GridMenu">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" x:Name="CatalogCol"/>
+                <ColumnDefinition Width="*" x:Name="AdminCol"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="CatalogButton" Grid.Column="0" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource ButtonTextColor}" Click="CatalogButton_Click" FontSize="16" FontWeight="Bold">Каталог</Button>
+            <Button x:Name="AdminPanelButton" Grid.Column="1" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource ButtonTextColor}" FontSize="16" FontWeight="Bold" Click="AdminPanelButton_Click">Админ панель</Button>
+        </Grid>
+
+        <Frame x:Name="MainFrame" Margin="0,113,0,0" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

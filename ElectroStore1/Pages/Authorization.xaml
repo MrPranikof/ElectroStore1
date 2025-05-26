@@ -21,7 +21,7 @@
             <TextBlock Foreground="{StaticResource SecondaryTextColor}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,196,0,0">Пароль</TextBlock>
             <TextBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="300" Height="18" Margin="0,217,0,0" Visibility="Hidden" x:Name="showPassword"></TextBox>
             <PasswordBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="300" Height="18" Margin="0,217,0,0" x:Name="hidePassword"></PasswordBox>
-            <Button HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Height="20" Background="{StaticResource ButtonBackgroundColor}" BorderBrush="White" Foreground="{StaticResource TextColor}" Margin="0,280,0,0" Click="ButtonLogin" IsDefault="True">Войти</Button>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Height="20" Background="{StaticResource ButtonBackgroundColor}" BorderBrush="White" Foreground="{StaticResource ButtonTextColor}" Margin="0,280,0,0" Click="ButtonLogin" IsDefault="True" FontSize="12" FontWeight="Bold">Войти</Button>
             <Label HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,305,0,0">
                 <Hyperlink TextDecorations="None" Foreground="{StaticResource SecondaryTextColor}" NavigateUri="/Pages/Registration.xaml" RequestNavigate="RegistNav">Нет аккаунта? Зарегестрируйтесь</Hyperlink>
             </Label>
@@ -35,6 +35,5 @@
             </Label>
         </Grid>
         <Button Width="0" Height="0" VerticalAlignment="Bottom" IsCancel="True" Click="ButtonEsc"></Button>
-        <DataGrid x:Name="DG_Client" Margin="939,177,47,177" />
     </Grid>
 </Window>

@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
+using System.Net;
+using System.Net.Http;
 
 namespace ElectroStore1
 {
@@ -27,26 +29,6 @@ namespace ElectroStore1
         public MainWindow()
         {
             InitializeComponent();
-            LoadData();
-        }
-
-        public void LoadData()
-        {
-            try
-            {
-                using (SqlConnection connection = DBConnection.GetConnection())
-                {
-                    connection.Open();
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT * FROM Users", connection);
-                    DataTable dataTable = new DataTable();
-                    dataAdapter.Fill(dataTable);
-                    DG_Client.ItemsSource = dataTable.DefaultView;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         private bool x = true;
@@ -96,6 +78,7 @@ namespace ElectroStore1
             if (showPassword.Visibility == Visibility.Visible)
                 userPassword = showPassword.Text;
             string HashedPassword = Hash.HashPassword(userPassword);
+            string ipAddress = GetIPAddress();
 
             using (SqlConnection connection = DBConnection.GetConnection())
             {
@@ -115,7 +98,17 @@ namespace ElectroStore1
                     {
                         int userId = (int)reader["userId"];
                         int RoleId = (int)reader["RoleId"];
+                        reader.Close();
 
+                        string sql = @"INSERT INTO LoginHistory (UserId, LoginTime, IPAddress) VALUES (@UserId, @LoginTime, @IPAddress)";
+                        using (SqlCommand cmd = new SqlCommand(sql, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@UserId", userId);
+                            cmd.Parameters.AddWithValue("@LoginTime", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@IPAddress", ipAddress);
+
+                            cmd.ExecuteNonQuery();
+                        }
                         MessageBox.Show("Вы успешно авторизовались");
                         Main nextWindow = new Main(userId, RoleId);
                         nextWindow.Show();
@@ -131,6 +124,23 @@ namespace ElectroStore1
                 {
                     MessageBox.Show($"Ошибка: {ex}");
                 }
+            }
+        }
+        public static string GetIPAddress()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(5);
+
+                    string IP = client.GetStringAsync("https://api.ipify.org").GetAwaiter().GetResult();
+                    return IP;
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Ошибка: {ex.Message}";
             }
         }
 

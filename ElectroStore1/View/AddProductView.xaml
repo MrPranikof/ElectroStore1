@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="ElectroStore1.Views.AddProductView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectroStore1.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800"
+             Loaded="UserControl_Loaded">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="WhiteSmoke" Margin="20">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Название:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <TextBox x:Name="ProductNameBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
+
+            <TextBlock Text="Цена:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <TextBox x:Name="PriceBox" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+            <TextBlock Text="Скидка (%):" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <TextBox x:Name="DiscountBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+            <TextBlock Text="Категория:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <ComboBox x:Name="CategoryBox" Grid.Row="3" Grid.Column="1" Margin="5"
+                      DisplayMemberPath="CategoryName" SelectedValuePath="CategoryId"/>
+
+            <TextBlock Text="Бренд:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <ComboBox x:Name="BrandBox" Grid.Row="4" Grid.Column="1" Margin="5"
+                      DisplayMemberPath="BrandName" SelectedValuePath="BrandId"/>
+
+            <TextBlock Text="Изображение:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="5">
+                <TextBox x:Name="ImagePathBox" Width="200" IsReadOnly="True"/>
+                <Button Content="📂" Width="30" Margin="4,0,0,0" Click="SelectImage_Click"/>
+            </StackPanel>
+
+            <Button Content="Добавить товар"
+                    Grid.Row="6" Grid.ColumnSpan="2"
+                    Margin="0,20,0,0" Padding="10"
+                    HorizontalAlignment="Center"
+                    Click="AddProduct_Click"/>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

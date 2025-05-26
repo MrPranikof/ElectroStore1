@@ -9,6 +9,10 @@
             <SolidColorBrush x:Key="SecondaryTextColor" Color="#757575"/>
             <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#03A9F4"/>
             <SolidColorBrush x:Key="BackgroundColor" Color="#F5F5F5"/>
+            <SolidColorBrush x:Key="ButtonTextColor" Color="White"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ViewModels/ProductView.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -9,7 +9,7 @@ namespace ElectroStore1
 {
     public static class DBConnection
     {
-        private static readonly string connectionString = @"Data Source=DESKTOP-EOVA9CM;Initial Catalog=ElectroStoreDB;Integrated Security=True";
+        private static readonly string connectionString = @"Data Source=.\;Initial Catalog=ElectroStoreDB;Integrated Security=True";
 
         public static SqlConnection GetConnection()
         {

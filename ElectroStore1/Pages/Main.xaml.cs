@@ -16,6 +16,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using System.Data;
 using System.Data.Common;
 using ElectroStore1.Windows.Pages;
+using ElectroStore1.Pages.MainPages;
 
 namespace ElectroStore1.Pages
 {
@@ -29,66 +30,62 @@ namespace ElectroStore1.Pages
             _userId = userId;
             _roleId = roleId;
             SetupUI();
+            MainFrame.Navigate(new MainPage());
         }
         private void SetupUI()
         {
             if (_roleId != 1)
             {
-                AdminPanelButton.Visibility = Visibility.Collapsed;
+                GridMenu.Children.Remove(AdminPanelButton);
+                AdminCol.Width = new GridLength(0);
             }
         }
-        private void CatalogButton_Enter(object sender, RoutedEventArgs e)
+        private void SearchTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            canvasCatalog.Visibility = Visibility.Visible;
-        }
-        private void FavouritesButton_Enter(object sender, RoutedEventArgs e)
-        {
-            canvasFavourites.Visibility = Visibility.Visible;
-        }
-        private void BasketButton_Enter(object sender, RoutedEventArgs e)
-        {
-            canvasBasket.Visibility = Visibility.Visible;
-        }
-        private void AdminPanelButton_Enter(object sender, RoutedEventArgs e)
-        {
-            canvasAdminPanel.Visibility = Visibility.Visible;
+            if (SearchTextBox.Text == "Поиск")
+                SearchTextBox.Text = "";
         }
 
-        private void UIElement_Leave(object sender, RoutedEventArgs e)
+        private void SearchTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (!IsMouseOverPanel())
-            {
-                HideAllPanels();
-            }
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+                SearchTextBox.Text = "Поиск";
         }
 
-        private void Panel_MouseEnter(object sender, RoutedEventArgs e)
+        private void GoToMain_Click(object sender, RoutedEventArgs e)
         {
+            MainFrame.Navigate(new MainPage());
         }
 
-        private void Panel_MouseLeave(object sender, RoutedEventArgs e)
+        private void AdminPanelButton_Click(object sender, RoutedEventArgs e)
         {
-            HideAllPanels();
-        }
-
-        private bool IsMouseOverPanel()
-        {
-            return canvasCatalog.IsMouseOver ||
-                   canvasFavourites.IsMouseOver ||
-                   canvasBasket.IsMouseOver ||
-                   canvasAdminPanel.IsMouseOver;
-        }
-
-        private void HideAllPanels()
-        {
-            canvasCatalog.Visibility = Visibility.Collapsed;
-            canvasFavourites.Visibility = Visibility.Collapsed;
-            canvasBasket.Visibility = Visibility.Collapsed;
-            canvasAdminPanel.Visibility = Visibility.Collapsed;
+            MainFrame.Navigate(new AdminPanelPage());
         }
         private void CatalogButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new Catalog());
+        }
+
+        private void Search_Button(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new SearchPage());
+        }
+
+        private void Basket_Button(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new BasketPage());
+        }
+        private void Favourites_Button(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new FavouritesPage());
+        }
+        private void Delivery_Button(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new DeliveryPage());
+        }
+        private void Profile_Button(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ProfilePage());
         }
     }
 }
