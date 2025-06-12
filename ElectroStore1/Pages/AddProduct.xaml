@@ -3,15 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ElectroStore1.Pages" xmlns:views="clr-namespace:ElectroStore1.Views"
+        xmlns:local="clr-namespace:ElectroStore1.Pages" 
+        xmlns:views="clr-namespace:ElectroStore1.Views"
         mc:Ignorable="d"
-        Title="Добавление товара" Height="450" Width="800"
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
-        >
-    <Grid Background="WhiteSmoke">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <views:AddProductView HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20"/>
-        </ScrollViewer>
+        Title="Добавление товара" 
+        Height="500" 
+        Width="700"
+        MinHeight="450"
+        MinWidth="600"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}">
+            <Setter Property="Background" Value="#f5f6fa"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Border CornerRadius="10" Background="White" Margin="20" Padding="0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <views:AddProductView Margin="20"/>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </Window>

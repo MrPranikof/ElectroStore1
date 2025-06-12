@@ -3,29 +3,94 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ElectroStore1.Pages.MainPages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="AdminPanelPage">
+      Title="Admin Panel"
+      Background="#F5F5F5">
 
+    <Page.Resources>
+        <Style x:Key="AdminButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Background" Value="#3498DB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="5"
+                                BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2980B9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+    
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel Width="200">
-                <Button HorizontalAlignment="Left" Margin="10,10" Click="AddProduct_Click" Width="150">Добавление товара</Button>
-                <Button HorizontalAlignment="Left" Margin="10,10" Click="AddCategory_Click" Width="150">Добавление категории</Button>
-                <Button HorizontalAlignment="Left" Margin="10,10" Click="AddBrand_Click" Width="150">Добавление бренда</Button>
+        <TextBlock Text="Администрирование" 
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Margin="0,25,0,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"/>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Height="300" Margin="0,100,0,0">
+            <StackPanel Margin="0,0,10,0">
+                <Button x:Name="ProductsBtn" 
+                    Content="Товары" 
+                    Style="{StaticResource AdminButtonStyle}"
+                    Click="Product_Click"
+                    Margin="0,5"/>
+
+                <Button x:Name="BrandsBtn" 
+                    Content="Бренды" 
+                    Style="{StaticResource AdminButtonStyle}"
+                    Click="Brand_Click"
+                    Margin="0,5"/>
+
+                <Button x:Name="CategoriesBtn" 
+                    Content="Категории" 
+                    Style="{StaticResource AdminButtonStyle}"
+                    Click="Category_Click"
+                    Margin="0,5"/>
+
+                <Button x:Name="UsersBtn" 
+                    Content="Пользователи" 
+                    Style="{StaticResource AdminButtonStyle}"
+                    Click="Users_Click"
+                    Margin="0,5"/>
             </StackPanel>
-            <StackPanel Width="200">
-                <Button HorizontalAlignment="Left" Margin="10,10" Click="AddProduct_Click" Width="150">Редактирование товаров</Button>
-                <Button HorizontalAlignment="Left" Margin="10,10" Click="AddProduct_Click" Width="150">Редактирование категорий</Button>
-                <Button HorizontalAlignment="Left" Margin="10,10" Click="AddProduct_Click" Width="150">Редактирование брендов</Button>
-            </StackPanel>
-            <StackPanel Width="200">
-                <Button HorizontalAlignment="Left" Margin="10,10" Click="AddProduct_Click" Width="150">Работа с пользователями</Button>
-            </StackPanel>
-            <StackPanel Width="200">
+            <StackPanel>
+
+                <Button x:Name="CartsBtn" 
+                    Content="Корзина" 
+                    Style="{StaticResource AdminButtonStyle}"
+                    Click="Carts_Click"
+                    Margin="0,5"/>
+
+                <Button x:Name="OrdersBtn" 
+                    Content="Заказы" 
+                    Style="{StaticResource AdminButtonStyle}"
+                    Click="Orders_Click"
+                    Margin="0,5"/>
+
+                <Button x:Name="LoggerBtn" 
+                    Content="Папка с логами" 
+                    Style="{StaticResource AdminButtonStyle}"
+                    Click="Logger_Click"
+                    Margin="0,5"/>
             </StackPanel>
         </StackPanel>
-        
     </Grid>
 </Page>

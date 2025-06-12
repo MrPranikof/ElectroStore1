@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
 
 namespace ElectroStore1.Pages
 {
@@ -22,6 +23,43 @@ namespace ElectroStore1.Pages
         public AddCategory()
         {
             InitializeComponent();
+        }
+        private void AddCategory_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string categoryName = CategoryNameBox.Text.Trim();
+
+                if (string.IsNullOrWhiteSpace(categoryName))
+                {
+                    MessageBox.Show("Введите название категории", "Ошибка",
+                                  MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                using (SqlConnection connection = DBConnection.GetConnection())
+                {
+                    connection.Open();
+
+                    var cmd = new SqlCommand(
+                        "INSERT INTO Categories (CategoryName, CreatedAt) VALUES (@name, GETDATE())",
+                        connection);
+
+                    cmd.Parameters.AddWithValue("@name", categoryName);
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Категория успешно добавлена", "Успех",
+                                  MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    DialogResult = true;
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при добавлении категории: {ex.Message}", "Ошибка",
+                              MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

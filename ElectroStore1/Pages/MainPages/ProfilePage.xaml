@@ -3,12 +3,178 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ElectroStore1.Pages.MainPages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="ProfilePage">
+      d:DesignHeight="600" d:DesignWidth="1200"
+      Title="Профиль пользователя">
 
-    <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="64">Профиль</TextBlock>
+    <Grid Background="#FFF5F5F5">
+        <ScrollViewer>
+            <Border Background="White"
+                    Margin="20"
+                    CornerRadius="10"
+                    BorderBrush="#FFE0E0E0"
+                    BorderThickness="1"
+                    Padding="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" 
+                                VerticalAlignment="Top"
+                                Margin="0 0 30 0">
+<Border Width="150" 
+        Height="150"
+        CornerRadius="75"
+        BorderBrush="#FF3F51B5"
+        BorderThickness="2"
+        Background="#FFEEEEEE">
+    <Image x:Name="AvatarImage"
+           Stretch="UniformToFill">
+        <Image.Clip>
+            <EllipseGeometry RadiusX="73" RadiusY="73" Center="73,73"/>
+        </Image.Clip>
+    </Image>
+</Border>
+
+                        <Button Content="Сменить фото" 
+                                Margin="0 15 0 0"
+                                Width="150"
+                                Height="30"
+                                Style="{StaticResource ModernButton}"
+                                Click="ChangePhoto_Click"/>
+
+                        <TextBlock Text="Поддержка: JPG, PNG (макс. 2MB)"
+                                   Margin="0 5 0 0"
+                                   FontSize="10"
+                                   Foreground="#FF757575"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Правая часть - данные -->
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Личные данные"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Margin="0 0 0 20"/>
+
+                        <!-- Форма -->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- 0: Логин -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- 1: Email -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- 2: Имя -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- 3: Фамилия -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- 4: Телефон -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- 5: Дата рождения -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- 6: Пол -->
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Логин -->
+                            <TextBlock Text="Логин:" 
+                                       Grid.Row="0" Grid.Column="0"
+                                       Style="{StaticResource ProfileLabel}"/>
+                            <TextBox x:Name="UsernameBox" 
+                                     Grid.Row="0" Grid.Column="1"
+                                     Style="{StaticResource ProfileTextBox}"
+                                     Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <!-- Email -->
+                            <TextBlock Text="Email:" 
+                                       Grid.Row="1" Grid.Column="0"
+                                       Style="{StaticResource ProfileLabel}"/>
+                            <TextBox x:Name="EmailBox" 
+                                     Grid.Row="1" Grid.Column="1"
+                                     Style="{StaticResource ProfileTextBox}"
+                                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <!-- Имя -->
+                            <TextBlock Text="Имя:" 
+                                       Grid.Row="2" Grid.Column="0"
+                                       Style="{StaticResource ProfileLabel}"/>
+                            <TextBox x:Name="FirstNameBox" 
+                                     Grid.Row="2" Grid.Column="1"
+                                     Style="{StaticResource ProfileTextBox}"
+                                     Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <!-- Фамилия -->
+                            <TextBlock Text="Фамилия:" 
+                                       Grid.Row="3" Grid.Column="0"
+                                       Style="{StaticResource ProfileLabel}"/>
+                            <TextBox x:Name="LastNameBox" 
+                                     Grid.Row="3" Grid.Column="1"
+                                     Style="{StaticResource ProfileTextBox}"
+                                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <!-- Телефон -->
+                            <TextBlock Text="Телефон:" 
+                                       Grid.Row="4" Grid.Column="0"
+                                       Style="{StaticResource ProfileLabel}"/>
+                            <TextBox x:Name="PhoneBox" 
+                                     Grid.Row="4" Grid.Column="1"
+                                     Style="{StaticResource ProfileTextBox}"
+                                     Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <!-- Дата рождения -->
+                            <TextBlock Text="Дата рождения:" 
+                                       Grid.Row="5" Grid.Column="0"
+                                       Style="{StaticResource ProfileLabel}"/>
+                            <DatePicker x:Name="BirthDatePicker" 
+                                       Grid.Row="5" Grid.Column="1"
+                                       Style="{StaticResource ProfileDatePicker}"
+                                       SelectedDate="{Binding DateOfBirth}"/>
+
+                            <!-- Пол -->
+                            <TextBlock Text="Пол:" 
+                                       Grid.Row="6" Grid.Column="0"
+                                       Style="{StaticResource ProfileLabel}"/>
+                            <ComboBox x:Name="GenderComboBox"
+                                      Grid.Row="6" Grid.Column="1"
+                                      Style="{StaticResource ProfileComboBox}"
+                                      SelectedValue="{Binding Gender}"
+                                      SelectedValuePath="Content">
+                                <ComboBoxItem>Мужской</ComboBoxItem>
+                                <ComboBoxItem>Женский</ComboBoxItem>
+                                <ComboBoxItem>Не указано</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+
+                        <!-- Кнопки -->
+                        <StackPanel Orientation="Horizontal" 
+                                    HorizontalAlignment="Right"
+                                    Margin="0 30 0 0">
+                            <Button Content="Сменить пароль" 
+                                    Style="{StaticResource ModernButton}"
+                                    Width="150"
+                                    Margin="0 0 15 0"
+                                    Click="ChangePassword_Click"/>
+                            <Button Content="Сохранить" 
+                                    Style="{StaticResource ModernButton}"
+                                    Background="#FF4CAF50"
+                                    Width="120"
+                                    Click="SaveProfile_Click"/>
+                            <Button Content="Выйти из аккаунта" 
+                                    Style="{StaticResource ModernButton}"
+                                    Background="#FFE53935"
+                                    Width="150"
+                                    Margin="15 0 0 0"
+                                    Click="Logout_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </ScrollViewer>
     </Grid>
 </Page>

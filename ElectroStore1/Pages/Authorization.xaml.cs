@@ -18,6 +18,9 @@ using System.Windows.Shapes;
 using System.Security.Cryptography;
 using System.Net;
 using System.Net.Http;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using ElectroStore;
+using ElectroStore.Properties;
 
 namespace ElectroStore1
 {
@@ -29,6 +32,16 @@ namespace ElectroStore1
         public MainWindow()
         {
             InitializeComponent();
+            LoadSavedUsername();
+        }
+        private void LoadSavedUsername()
+        {
+            if (AuthService.HasSavedUsername())
+            {
+                LoginTextBox.Text = AuthService.GetSavedUsername();
+                RememberMeCheckBox.IsChecked = true;
+                hidePassword.Focus();
+            }
         }
 
         private bool x = true;
@@ -71,59 +84,95 @@ namespace ElectroStore1
         }
         private void ButtonLogin(object sender, RoutedEventArgs e)
         {
-            string userLogin = LoginTextBox.Text;
-            string userPassword = null;
-            if (hidePassword.Visibility == Visibility.Visible)
-                userPassword = hidePassword.Password;
-            if (showPassword.Visibility == Visibility.Visible)
-                userPassword = showPassword.Text;
-            string HashedPassword = Hash.HashPassword(userPassword);
-            string ipAddress = GetIPAddress();
+            string userLogin = LoginTextBox.Text.Trim();
+            string userPassword = hidePassword.Visibility == Visibility.Visible ?
+                                hidePassword.Password :
+                                showPassword.Text;
 
-            using (SqlConnection connection = DBConnection.GetConnection())
+            if (string.IsNullOrWhiteSpace(userLogin) || string.IsNullOrWhiteSpace(userPassword))
             {
-                string query = @"SELECT userId, RoleId FROM Users WHERE username = @userLogin AND PasswordHash = @HashedPassword";
+                MessageBox.Show("Введите логин и пароль");
+                return;
+            }
 
-                SqlCommand command = new SqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@userLogin", userLogin);
-                command.Parameters.AddWithValue("@HashedPassword", HashedPassword);
-
-                try
+            try
+            {
+                using (SqlConnection connection = DBConnection.GetConnection())
                 {
                     connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
 
-                    if (reader.Read())
+                    int userId = 0;
+                    int roleId = 0;
+                    string storedHash = null;
+
+                    string userQuery = @"SELECT userId, RoleId, PasswordHash 
+                       FROM Users 
+                       WHERE username = @userLogin";
+
+                    using (SqlCommand userCommand = new SqlCommand(userQuery, connection))
                     {
-                        int userId = (int)reader["userId"];
-                        int RoleId = (int)reader["RoleId"];
-                        reader.Close();
+                        userCommand.Parameters.AddWithValue("@userLogin", userLogin);
 
-                        string sql = @"INSERT INTO LoginHistory (UserId, LoginTime, IPAddress) VALUES (@UserId, @LoginTime, @IPAddress)";
-                        using (SqlCommand cmd = new SqlCommand(sql, connection))
+                        using (SqlDataReader reader = userCommand.ExecuteReader())
                         {
-                            cmd.Parameters.AddWithValue("@UserId", userId);
-                            cmd.Parameters.AddWithValue("@LoginTime", DateTime.Now);
-                            cmd.Parameters.AddWithValue("@IPAddress", ipAddress);
-
-                            cmd.ExecuteNonQuery();
+                            if (reader.Read())
+                            {
+                                userId = reader.GetInt32(0);
+                                roleId = reader.GetInt32(1);
+                                storedHash = reader["PasswordHash"].ToString();
+                            }
                         }
-                        MessageBox.Show("Вы успешно авторизовались");
-                        Main nextWindow = new Main(userId, RoleId);
+                    }
+
+                    if (storedHash != null && Hash.VerifyPassword(userPassword, storedHash))
+                    {
+                        bool rememberMe = RememberMeCheckBox.IsChecked ?? false;
+                        if (rememberMe)
+                        {
+                            Settings.Default.SavedUsername = userLogin;
+                            Settings.Default.SavedPasswordHash = storedHash;
+                            Settings.Default.RememberMe = true;
+                            Settings.Default.Save();
+
+                            Logger.Info($"Сохранены данные для автовхода: {userLogin}");
+                        }
+                        else
+                        {
+                            AuthService.ClearSavedData();
+                        }
+
+                        string historyQuery = @"INSERT INTO LoginHistory 
+                              (UserId, LoginTime, IPAddress) 
+                              VALUES (@UserId, @LoginTime, @IPAddress)";
+
+                        using (SqlCommand historyCommand = new SqlCommand(historyQuery, connection))
+                        {
+                            historyCommand.Parameters.AddWithValue("@UserId", userId);
+                            historyCommand.Parameters.AddWithValue("@LoginTime", DateTime.Now);
+                            historyCommand.Parameters.AddWithValue("@IPAddress", GetIPAddress());
+
+                            historyCommand.ExecuteNonQuery();
+                        }
+
+                        Logger.Info($"Успешный вход: {userLogin}");
+
+                        Main nextWindow = new Main(userId, roleId);
                         nextWindow.Show();
                         this.Close();
                     }
                     else
                     {
+                        Logger.Warning($"Неверные учетные данные для: {userLogin}");
                         MessageBox.Show("Неверный логин или пароль");
+                        hidePassword.Clear();
+                        showPassword.Clear();
                     }
-                    reader.Close();
                 }
-                catch(Exception ex)
-                {
-                    MessageBox.Show($"Ошибка: {ex}");
-                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Ошибка при входе", ex);
+                MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
         public static string GetIPAddress()

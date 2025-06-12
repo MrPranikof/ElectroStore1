@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ElectroStore1.ViewModels
+namespace ElectroStore.Controls
 {
-    internal class ProductRepository
+    internal class OptimizedProductCard
     {
     }
 }

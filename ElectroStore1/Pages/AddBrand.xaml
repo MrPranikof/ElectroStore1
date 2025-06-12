@@ -1,15 +1,74 @@
 ﻿<Window x:Class="ElectroStore1.Pages.AddBrand"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ElectroStore1.Pages"
-        mc:Ignorable="d"
-        Title="Добавление бренда" Height="450" Width="800"
-        ResizeMode="NoResize"
+        Title="Добавление бренда" 
+        Height="300" Width="500"
+        ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
-        >
-    <Grid>
-        
+        Background="Transparent">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#2d3436"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="InputField" TargetType="TextBox">
+            <Setter Property="Background" Value="#f5f6fa"/>
+            <Setter Property="BorderBrush" Value="#dfe6e9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+            <Setter Property="Cursor" Value=""/>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#6C5CE7"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="#206C5CE7"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5649C0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#f5f6fa">
+        <Border CornerRadius="10" Background="White" Margin="30" Padding="30">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Добавление нового бренда" 
+                          Grid.Row="0" FontSize="18" FontWeight="SemiBold"
+                          HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <TextBlock Text="Название бренда:" Grid.Row="1"/>
+                <TextBox x:Name="BrandNameBox" Grid.Row="2" Style="{StaticResource InputField}"/>
+
+                <Button Content="Добавить" Grid.Row="2" 
+                        Style="{StaticResource PrimaryButton}"
+                        HorizontalAlignment="Center"
+                        Click="AddBrand_Click" Margin="0,53,0,-33"/>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

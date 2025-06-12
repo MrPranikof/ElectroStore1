@@ -6,9 +6,40 @@
         xmlns:local="clr-namespace:ElectroStore1.Pages"
         mc:Ignorable="d"
         Title="Main" Height="600" Width="1200"
-        ResizeMode="NoResize"
+        ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         >
+    <Window.Resources>
+        <Style x:Key="ColorButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,3">
+                                    <GradientStop Color="#4285F4" Offset="0"/>
+                                    <GradientStop Color="#3367D6" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid VerticalAlignment="Top" Background="{StaticResource BackgroundColor}" Height="60">
             <Grid.ColumnDefinitions>
@@ -23,7 +54,7 @@
             <TextBox Grid.Column="2" x:Name="SearchTextBox" VerticalAlignment="Center" Height="30" Margin="10,0" GotFocus="SearchTextBox_GotFocus" LostFocus="SearchTextBox_LostFocus" FontSize="20">Поиск</TextBox>
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="3">
-                <Button Margin="5,0,70,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Search_Button">🔍</Button>
+                <Button Margin="5,0,70,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Search_Button" IsDefault="True  ">🔍</Button>
                 <Button Margin="5,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Basket_Button">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">🛒</TextBlock>
@@ -36,10 +67,10 @@
                         <TextBlock FontSize="12" Foreground="Black" HorizontalAlignment="Center">Избранное</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Margin="5,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Delivery_Button">
+                <Button Margin="5,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Orders_Button">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">📦</TextBlock>
-                        <TextBlock FontSize="12" HorizontalAlignment="Center">Доставки</TextBlock>
+                        <TextBlock FontSize="12" HorizontalAlignment="Center">Заказы</TextBlock>
                     </StackPanel>
                 </Button>
                 <Button Margin="5,0" Background="{StaticResource BackgroundColor}" BorderBrush="{StaticResource BackgroundColor}" FontSize="24" Click="Profile_Button">
@@ -51,14 +82,25 @@
             </StackPanel>
         </Grid>
 
-        <Grid Height="50" VerticalAlignment="Top" Margin="0,60,0,0" x:Name="GridMenu">
+        <Grid Height="50" VerticalAlignment="Top" Margin="0,60,0,0" x:Name="GridMenu"
+      Background="White">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" x:Name="CatalogCol"/>
                 <ColumnDefinition Width="*" x:Name="AdminCol"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="CatalogButton" Grid.Column="0" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource ButtonTextColor}" Click="CatalogButton_Click" FontSize="16" FontWeight="Bold">Каталог</Button>
-            <Button x:Name="AdminPanelButton" Grid.Column="1" Background="{StaticResource ButtonBackgroundColor}" Foreground="{StaticResource ButtonTextColor}" FontSize="16" FontWeight="Bold" Click="AdminPanelButton_Click">Админ панель</Button>
+            <Button x:Name="CatalogButton" Grid.Column="0" 
+            Style="{StaticResource ColorButtonStyle}"
+            Click="CatalogButton_Click"
+>
+                Каталог
+            </Button>
+
+            <Button x:Name="AdminPanelButton" Grid.Column="1" 
+            Style="{StaticResource ColorButtonStyle}"
+            Click="AdminPanelButton_Click">
+                Админ панель
+            </Button>
         </Grid>
 
         <Frame x:Name="MainFrame" Margin="0,113,0,0" NavigationUIVisibility="Hidden"/>

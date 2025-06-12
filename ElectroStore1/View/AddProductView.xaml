@@ -3,57 +3,137 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ElectroStore1.Views"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Background="WhiteSmoke" Margin="20">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#2d3436"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <Style x:Key="InputField" TargetType="TextBox">
+            <Setter Property="Background" Value="#f5f6fa"/>
+            <Setter Property="BorderBrush" Value="#dfe6e9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="300"/>
-            </Grid.ColumnDefinitions>
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="#f5f6fa"/>
+            <Setter Property="BorderBrush" Value="#dfe6e9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Padding" Value="8"/>
+                        <Setter Property="FontSize" Value="14"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <TextBlock Text="Название:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="ProductNameBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#6C5CE7"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="MinWidth" Value="180"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="#206C5CE7"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5649C0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-            <TextBlock Text="Цена:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="PriceBox" Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <Style x:Key="ImageButton" TargetType="Button">
+            <Setter Property="Background" Value="#6C5CE7"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="5,0,0,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5649C0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
 
-            <TextBlock Text="Скидка (%):" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <TextBox x:Name="DiscountBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <TextBlock Text="Категория:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <ComboBox x:Name="CategoryBox" Grid.Row="3" Grid.Column="1" Margin="5"
-                      DisplayMemberPath="CategoryName" SelectedValuePath="CategoryId"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="150"/>
+            <ColumnDefinition Width="*" MinWidth="300"/>
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Бренд:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <ComboBox x:Name="BrandBox" Grid.Row="4" Grid.Column="1" Margin="5"
-                      DisplayMemberPath="BrandName" SelectedValuePath="BrandId"/>
+        <TextBlock Text="Добавление нового товара" 
+                   Grid.Row="0" Grid.ColumnSpan="2"
+                   FontSize="18" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
-            <TextBlock Text="Изображение:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="5">
-                <TextBox x:Name="ImagePathBox" Width="200" IsReadOnly="True"/>
-                <Button Content="📂" Width="30" Margin="4,0,0,0" Click="SelectImage_Click"/>
-            </StackPanel>
+        <TextBlock Text="Название:" Grid.Row="1" Grid.Column="0"/>
+        <TextBox x:Name="ProductNameBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource InputField}"/>
 
-            <Button Content="Добавить товар"
-                    Grid.Row="6" Grid.ColumnSpan="2"
-                    Margin="0,20,0,0" Padding="10"
-                    HorizontalAlignment="Center"
-                    Click="AddProduct_Click"/>
-        </Grid>
-    </ScrollViewer>
+        <TextBlock Text="Цена:" Grid.Row="2" Grid.Column="0"/>
+        <TextBox x:Name="PriceBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource InputField}"/>
+
+        <TextBlock Text="Скидка (%):" Grid.Row="3" Grid.Column="0"/>
+        <TextBox x:Name="DiscountBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource InputField}"/>
+
+        <TextBlock Text="Категория:" Grid.Row="4" Grid.Column="0"/>
+        <ComboBox x:Name="CategoryBox" Grid.Row="4" Grid.Column="1" 
+                  Style="{StaticResource ComboBoxStyle}"
+                  DisplayMemberPath="CategoryName" SelectedValuePath="CategoryId"/>
+
+        <TextBlock Text="Бренд:" Grid.Row="5" Grid.Column="0"/>
+        <ComboBox x:Name="BrandBox" Grid.Row="5" Grid.Column="1" 
+                  Style="{StaticResource ComboBoxStyle}"
+                  DisplayMemberPath="BrandName" SelectedValuePath="BrandId"/>
+
+        <TextBlock Text="Изображение:" Grid.Row="6" Grid.Column="0"/>
+        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+            <TextBox x:Name="ImagePathBox" Style="{StaticResource InputField}" IsReadOnly="True" Margin="0"/>
+            <Button Content="📂" Style="{StaticResource ImageButton}" Click="SelectImage_Click"/>
+        </StackPanel>
+
+        <Button Content="Добавить товар"
+                Grid.Row="7" Grid.ColumnSpan="2"
+                Style="{StaticResource PrimaryButton}"
+                HorizontalAlignment="Center" Margin="0,20,0,0"
+                Click="AddProduct_Click"/>
+    </Grid>
+
 </UserControl>

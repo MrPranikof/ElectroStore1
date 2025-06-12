@@ -9,18 +9,18 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ElectroStore1.View
+namespace ElectroStore1.LoaderFolder
 {
     /// <summary>
-    /// Логика взаимодействия для AddCategoryVIew.xaml
+    /// Логика взаимодействия для LoaderWindow.xaml
     /// </summary>
-    public partial class AddCategoryVIew : UserControl
+    public partial class LoaderWindow : Window
     {
-        public AddCategoryVIew()
+        public LoaderWindow()
         {
             InitializeComponent();
         }
